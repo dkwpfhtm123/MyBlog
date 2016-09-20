@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'^post/(?P<pk>[0-9]+)/comment/$', views.add_comment_to_post, name='add_comment_to_post'),
     url(r'^comment/(?P<pk>[0-9]+)/approve/$', views.comment_approve, name='comment_approve'),
     url(r'^comment/(?P<pk>[0-9]+)/remove/$', views.comment_remove, name='comment_remove'),
+    url(r'^hello/$', views.hello, name='return_hello'),
+    url(r'^getscore/$', views.get_scores, name='get_scores'),
+    url(r'^submitscore/$', views.submit_score, name='submit_score')
 ]

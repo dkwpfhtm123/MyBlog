@@ -33,3 +33,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Score(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=10) 
+    score = models.PositiveIntegerField()
+    date = models.DateTimeField(default=timezone.now)

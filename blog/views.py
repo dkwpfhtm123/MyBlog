@@ -1,8 +1,46 @@
+from datetime import timedelta
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404 , redirect
 from django.utils import timezone
 from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, Score
 from django.contrib.auth.decorators import login_required
+
+
+def get_scores(request):
+    queryset = Score.objects.filter(date__gt=timezone.now()-timedelta(days=7)).order_by('-score')[:10]
+
+    scores = []
+    for score in queryset:
+        scores.append({
+            'name': score.name,
+            'score': score.score,
+        })
+
+    import json
+
+    return HttpResponse(json.dumps(scores), content_type='application/json')
+
+
+def submit_score(request):
+    name = request.GET.get('name', '')
+    score = int(request.GET.get('score', 0))
+
+    Score.objects.create(name=name, score=score)
+
+    return HttpResponse('ok', content_type='text/plain')
+
+
+def hello(request):
+    from django.http import HttpResponse
+    import json
+    x = [
+        {'rank': 1, 'name': 'AA A', 'score': 100000, 'date': '2001-01-02'},
+        {},
+        {},
+    ]
+    y = json.dumps(x)
+    return HttpResponse(y, content_type='text/plain')
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
